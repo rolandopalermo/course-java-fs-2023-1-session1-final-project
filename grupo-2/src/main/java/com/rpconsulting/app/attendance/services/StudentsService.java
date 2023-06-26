@@ -9,10 +9,10 @@ public interface StudentsService {
 
     StudentCreationResponseDto create(StudentCreationRequestDto student);
 
-    StudentCreationRequestDto findById(UUID id);
+    StudentCreationResponseDto findById(UUID id);
 
-    void deleteById(UUID uuid);
+    void deleteById(UUID id);
 
-    StudentCreationResponseDto update(StudentCreationRequestDto student);
+    StudentCreationResponseDto update(UUID id, StudentCreationRequestDto studentDto);
 
 }
