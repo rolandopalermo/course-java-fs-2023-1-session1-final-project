@@ -1,0 +1,3 @@
+2023-06-24 21:15:01 jdbc[14]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SELECT * FROM CATEGORIES CATEGORIES [*]PRODUCTS PRODUCTS"; SQL statement:
+SELECT * FROM CATEGORIES CATEGORIES PRODUCTS PRODUCTS [42000-214]
