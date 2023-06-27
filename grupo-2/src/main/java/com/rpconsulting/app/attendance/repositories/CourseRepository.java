@@ -14,4 +14,7 @@ public interface CourseRepository extends JpaRepository<Course, UUID> {
     @Query("select c from Course c where c.code = :code")
     Optional<Course> findFirstByCode(String code);
 
+    @Query("select c from Course c where c.name = :name")
+    Optional<Course> findFirstByName(String name);
+
 }
