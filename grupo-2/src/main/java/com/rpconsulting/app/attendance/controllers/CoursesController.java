@@ -4,10 +4,10 @@ import com.rpconsulting.app.attendance.services.CoursesService;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import static com.rpconsulting.app.attendance.utils.Constants.API_VERSION_2;
+import static com.rpconsulting.app.attendance.utils.Constants.API_VERSION;
 
 @RestController
-@RequestMapping(value = {API_VERSION_2 + "courses"})
+@RequestMapping(value = {API_VERSION + "courses"})
 public class CoursesController {
 
     private final CoursesService coursesService;
