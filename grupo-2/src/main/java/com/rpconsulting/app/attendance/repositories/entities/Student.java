@@ -4,6 +4,8 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -33,5 +35,8 @@ public class Student {
 
     @Column
     private String email;
+
+    @OneToMany(mappedBy = "student")
+    private List<Attendance> attendances = new ArrayList<>();
 
 }

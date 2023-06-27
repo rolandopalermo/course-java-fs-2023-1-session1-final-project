@@ -81,8 +81,8 @@ public class StudentsServiceImpl implements StudentsService {
         student.setLastName(studentDto.getLastName());
         student.setDni(studentDto.getDni());
         student.setBirthdate(DateUtils.toLocalDate(studentDto.getBirthdate()));
-        student.setCellphone(studentDto.getCellphone() == null ? null : studentDto.getCellphone());
-        student.setEmail(student.getEmail() == null ? null : student.getEmail());
+        student.setCellphone(studentDto.getCellphone());
+        student.setEmail(student.getEmail());
         return student;
     }
 
@@ -93,8 +93,8 @@ public class StudentsServiceImpl implements StudentsService {
         studentDto.setLastName(student.getLastName());
         studentDto.setDni(student.getDni());
         studentDto.setBirthdate(DateUtils.toString(student.getBirthdate()));
-        studentDto.setCellphone(student.getCellphone() == null ? null : studentDto.getCellphone());
-        studentDto.setEmail(student.getEmail() == null ? null : studentDto.getEmail());
+        studentDto.setCellphone(studentDto.getCellphone());
+        studentDto.setEmail(studentDto.getEmail());
         return studentDto;
     }
 
