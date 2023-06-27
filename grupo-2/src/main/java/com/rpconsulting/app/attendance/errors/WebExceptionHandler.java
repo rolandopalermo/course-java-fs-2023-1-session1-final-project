@@ -1,6 +1,7 @@
 package com.rpconsulting.app.attendance.errors;
 
 import com.rpconsulting.app.attendance.dtos.errors.ErrorDto;
+import com.rpconsulting.app.attendance.errors.exceptions.AlreadyExistsException;
 import com.rpconsulting.app.attendance.errors.exceptions.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -22,8 +23,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static java.text.MessageFormat.format;
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
-import static org.springframework.http.HttpStatus.NOT_FOUND;
+import static org.springframework.http.HttpStatus.*;
 
 @Slf4j
 @ControllerAdvice
@@ -37,6 +37,16 @@ public class WebExceptionHandler extends ResponseEntityExceptionHandler {
                 .resource(request.getRequestURI())
                 .build();
         return buildResponseEntity(NOT_FOUND, error);
+    }
+
+    @ExceptionHandler({AlreadyExistsException.class})
+    public ResponseEntity<?> handleAlreadyExistsException(AlreadyExistsException ex, HttpServletRequest request) {
+        ErrorDto error = ErrorDto
+                .builder()
+                .messages(Collections.singletonList(ex.getMessage()))
+                .resource(request.getRequestURI())
+                .build();
+        return buildResponseEntity(CONFLICT, error);
     }
 
     @Override

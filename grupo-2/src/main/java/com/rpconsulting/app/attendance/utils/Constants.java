@@ -4,6 +4,6 @@ public final class Constants {
     private Constants() {
     }
 
-    public static final String API_VERSION_2 = "api/v1.0/";
+    public static final String API_VERSION = "api/v1.0/";
 
 }
