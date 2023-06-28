@@ -1,7 +1,9 @@
 package com.rpconsulting.app.attendance.controllers;
 
+import com.rpconsulting.app.attendance.annotations.StudentsListFilter;
 import com.rpconsulting.app.attendance.dtos.students.StudentCreationRequestDto;
 import com.rpconsulting.app.attendance.dtos.students.StudentCreationResponseDto;
+import com.rpconsulting.app.attendance.dtos.students.StudentListFilterDto;
 import com.rpconsulting.app.attendance.services.StudentsService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -51,6 +53,13 @@ public class StudentsController {
     @ResponseStatus(code = HttpStatus.OK)
     public StudentCreationResponseDto update(@PathVariable("id") UUID id, @RequestBody StudentCreationRequestDto requestDto) {
         return studentsService.update(id, requestDto);
+    }
+
+    @StudentsListFilter
+    @GetMapping("filters")
+    @ResponseStatus(code = HttpStatus.OK)
+    public Page<StudentCreationResponseDto> findAllByFilters(StudentListFilterDto filters, Pageable pageable) {
+        return studentsService.findAllByFilters(filters, pageable);
     }
 
 }

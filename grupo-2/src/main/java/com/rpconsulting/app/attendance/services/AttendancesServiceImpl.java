@@ -55,7 +55,7 @@ public class AttendancesServiceImpl implements AttendancesService {
     private AttendanceCreationResponseDto toDto(Attendance attendance) {
         AttendanceCreationResponseDto dto = new AttendanceCreationResponseDto();
         dto.setId(attendance.getId());
-        dto.setStatus(attendance.getStatus());
+        dto.setStatus(attendance.getStatus().name());
         dto.setDateCreation(DateUtils.toString(attendance.getDateCreation()));
         dto.setObservation(attendance.getObservation());
         return dto;
