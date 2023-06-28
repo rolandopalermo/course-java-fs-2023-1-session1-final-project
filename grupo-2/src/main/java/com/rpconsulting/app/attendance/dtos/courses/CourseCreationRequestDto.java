@@ -9,6 +9,8 @@ import javax.validation.constraints.Size;
 @Data
 public class CourseCreationRequestDto {
 
+    @NotNull
+    @NotEmpty
     private String name;
     @NotNull
     @NotEmpty

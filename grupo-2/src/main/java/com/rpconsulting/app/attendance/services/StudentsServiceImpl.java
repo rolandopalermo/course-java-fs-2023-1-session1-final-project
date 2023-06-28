@@ -2,6 +2,7 @@ package com.rpconsulting.app.attendance.services;
 
 import com.rpconsulting.app.attendance.dtos.students.StudentCreationRequestDto;
 import com.rpconsulting.app.attendance.dtos.students.StudentCreationResponseDto;
+import com.rpconsulting.app.attendance.dtos.students.StudentListFilterDto;
 import com.rpconsulting.app.attendance.errors.exceptions.AlreadyExistsException;
 import com.rpconsulting.app.attendance.errors.exceptions.NotFoundException;
 import com.rpconsulting.app.attendance.repositories.StudentRepository;
@@ -75,6 +76,19 @@ public class StudentsServiceImpl implements StudentsService {
         );
     }
 
+    @Override
+    public Page<StudentCreationResponseDto> findAllByFilters(StudentListFilterDto filterDto, Pageable pageable) {
+        Page<Student> page =
+                studentRepository.findAllByFilters(filterDto.getName(),
+                        filterDto.getLastName(),
+                        pageable);
+        return new PageImpl<>(
+                page.stream().map(this::toDto).collect(Collectors.toList()),
+                page.getPageable(),
+                page.getTotalElements()
+        );
+    }
+
     private Student toEntity(StudentCreationRequestDto studentDto) {
         Student student = new Student();
         student.setName(studentDto.getName());
@@ -82,7 +96,7 @@ public class StudentsServiceImpl implements StudentsService {
         student.setDni(studentDto.getDni());
         student.setBirthdate(DateUtils.toLocalDate(studentDto.getBirthdate()));
         student.setCellphone(studentDto.getCellphone());
-        student.setEmail(student.getEmail());
+        student.setEmail(studentDto.getEmail());
         return student;
     }
 
@@ -93,8 +107,8 @@ public class StudentsServiceImpl implements StudentsService {
         studentDto.setLastName(student.getLastName());
         studentDto.setDni(student.getDni());
         studentDto.setBirthdate(DateUtils.toString(student.getBirthdate()));
-        studentDto.setCellphone(studentDto.getCellphone());
-        studentDto.setEmail(studentDto.getEmail());
+        studentDto.setCellphone(student.getCellphone());
+        studentDto.setEmail(student.getEmail());
         return studentDto;
     }
 
