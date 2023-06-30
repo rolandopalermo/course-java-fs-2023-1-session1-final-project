@@ -32,6 +32,5 @@ public class Product {
     @OneToMany(mappedBy = "product")
     private List<Stock> stocks = new ArrayList<>();
 
-    @OneToMany(mappedBy = "product")
-    private List<DocumentDetail> details = new ArrayList<>();
+    
 }

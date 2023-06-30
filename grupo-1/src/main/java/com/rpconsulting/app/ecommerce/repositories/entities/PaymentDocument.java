@@ -39,7 +39,7 @@ public class PaymentDocument {
     @OneToMany(mappedBy = "paymentDocument")
     private List<DocumentDetail> details = new ArrayList<>();
 
-    @ManyToOne
+    @ManyToOne //(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id")
     private Customer customer;
 }
