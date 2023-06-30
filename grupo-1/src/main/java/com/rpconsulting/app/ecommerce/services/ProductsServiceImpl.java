@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.rpconsulting.app.ecommerce.dtos.ProductCreationRequestDto;
 import com.rpconsulting.app.ecommerce.dtos.ProductCreationResponseDto;
+import com.rpconsulting.app.ecommerce.dtos.ProductUpdateRequestDto;
 import com.rpconsulting.app.ecommerce.errors.exceptions.AlreadyExistsException;
 import com.rpconsulting.app.ecommerce.errors.exceptions.NotFoundException;
 import com.rpconsulting.app.ecommerce.repositories.CategoryRepository;
@@ -33,26 +34,38 @@ public class ProductsServiceImpl implements ProductsService {
     		+ ", ya existe.");
     	}
     	
-    	Product product = productRepository.save(toEntity(request));
+    	Product pro = toEntity(request);
+    	pro.setCategory(findFirstCategoryById(request.getCategoryId()));
+    	
+    	Product product = productRepository.save(pro);
     	
         return toResponse(product);
 	}
 	
-	private Category findFirstById(long id) {
+	private Category findFirstCategoryById(long id) {
         return categoryRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(format("El id de la categoria ingresada {0}, no existe", id)));
     }
+	
+	private Product findFirstProductById(long id) {
+        return productRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException(format("El id del producto {0}, no existe", id)));
+    }
 
 	@Override
-	public ProductCreationResponseDto update(ProductCreationRequestDto request) {
-		// TODO Auto-generated method stub
-		return null;
+	public ProductCreationResponseDto update(long id, ProductUpdateRequestDto request) {
+		Product pro = findFirstProductById(id);
+		pro.setName(request.getName());
+		pro.setDescription(request.getDescription());
+		pro.setPrice(request.getPrice());
+		pro.setCategory(findFirstCategoryById(request.getCategoryId()));
+		
+		return toResponse(productRepository.save(pro));
 	}
 
 	@Override
 	public void delete(Long id) {
-		// TODO Auto-generated method stub
-		
+		productRepository.findById(id).ifPresent(productRepository::delete);
 	}
 	
 	private Product toEntity(ProductCreationRequestDto request) {
@@ -60,13 +73,6 @@ public class ProductsServiceImpl implements ProductsService {
 		product.setName(request.getName());
 		product.setDescription(request.getDescription());
 		product.setPrice(request.getPrice());
-		
-		product.setCategory(findFirstById(request.getCategoryId()));
-		
-//		Optional<Category> category = categoryRepository.findById(request.getCategoryId());
-//		if (category.isPresent()) {
-//			product.setCategory(category.get());
-//		}
         return product;
     }
 	
@@ -81,5 +87,7 @@ public class ProductsServiceImpl implements ProductsService {
         
         return response;
     }
+
+	
 
 }
