@@ -19,10 +19,10 @@ public class PaymentDocument {
     private Long id;
 
     @Column
-    private String document_type;
+    private String documentType;
 
     @Column
-    private String payment_type;
+    private String paymentType;
 
     @Column
     private BigDecimal taxAmount;

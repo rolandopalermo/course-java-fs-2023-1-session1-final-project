@@ -21,6 +21,9 @@ public class DocumentDetail {
     @Column
     private BigDecimal price;
 
+    @Column
+    private String name;
+
     @ManyToOne
     @JoinColumn(name = "order_id")
     private PaymentDocument paymentDocument;
