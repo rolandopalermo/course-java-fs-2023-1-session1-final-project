@@ -19,7 +19,7 @@ public class Stock {
     private BigDecimal quantity;
 
     @Column
-    private LocalDateTime created_at;
+    private LocalDateTime createdAt;
 
     @ManyToOne()
     @JoinColumn(name = "product_id")
