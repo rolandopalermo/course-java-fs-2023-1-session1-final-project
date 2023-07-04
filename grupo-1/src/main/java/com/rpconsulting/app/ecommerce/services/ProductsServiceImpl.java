@@ -8,15 +8,22 @@ import org.springframework.stereotype.Service;
 import com.rpconsulting.app.ecommerce.dtos.ProductCreationRequestDto;
 import com.rpconsulting.app.ecommerce.dtos.ProductCreationResponseDto;
 import com.rpconsulting.app.ecommerce.dtos.ProductUpdateRequestDto;
+import com.rpconsulting.app.ecommerce.dtos.StockCreationRequestDto;
+import com.rpconsulting.app.ecommerce.dtos.StockCreationResponseDto;
 import com.rpconsulting.app.ecommerce.errors.exceptions.AlreadyExistsException;
 import com.rpconsulting.app.ecommerce.errors.exceptions.NotFoundException;
 import com.rpconsulting.app.ecommerce.repositories.CategoryRepository;
 import com.rpconsulting.app.ecommerce.repositories.ProductRepository;
+import com.rpconsulting.app.ecommerce.repositories.StockRepository;
 import com.rpconsulting.app.ecommerce.repositories.entities.Category;
 import com.rpconsulting.app.ecommerce.repositories.entities.Product;
+import com.rpconsulting.app.ecommerce.repositories.entities.Stock;
 
 import lombok.RequiredArgsConstructor;
 import static java.text.MessageFormat.format;
+
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 
 @Service
@@ -25,6 +32,7 @@ public class ProductsServiceImpl implements ProductsService {
 
 	private final ProductRepository productRepository;
 	private final CategoryRepository categoryRepository;
+	private final StockRepository stockRepository;
 	
 	@Override
 	public ProductCreationResponseDto create(ProductCreationRequestDto request) {
@@ -88,6 +96,28 @@ public class ProductsServiceImpl implements ProductsService {
         return response;
     }
 
+	@Override
+	public StockCreationResponseDto updateStock(long id, StockCreationRequestDto request) {
+		Product pro = findFirstProductById(id);
+		Optional<Stock> s = stockRepository.findCurrentStock(id);
+		Stock sn = new Stock();
+		sn.setProduct(pro);
+		sn.setQuantity(request.getQuantity());
+		if (s.isPresent()) {
+			sn.setStock(s.get().getStock().add(request.getQuantity()));
+			//();
+    	} else {
+    		sn.setStock(request.getQuantity());
+    	}
+		sn.setCreatedAt(LocalDateTime.now());
+		return toRenponse(stockRepository.save(sn));
+	}
 	
+	private StockCreationResponseDto toRenponse(Stock stock) {
+		StockCreationResponseDto sDto = new StockCreationResponseDto();
+		sDto.setCurrentStock(stock.getQuantity());
+		sDto.setProductId(stock.getProduct().getId());
+		return sDto;
+	}
 
 }

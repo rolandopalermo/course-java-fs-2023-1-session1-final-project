@@ -10,10 +10,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.rpconsulting.app.ecommerce.dtos.CategoryCreationRequestDto;
 import com.rpconsulting.app.ecommerce.dtos.ProductCreationRequestDto;
 import com.rpconsulting.app.ecommerce.dtos.ProductCreationResponseDto;
 import com.rpconsulting.app.ecommerce.dtos.ProductUpdateRequestDto;
+import com.rpconsulting.app.ecommerce.dtos.StockCreationRequestDto;
+import com.rpconsulting.app.ecommerce.dtos.StockCreationResponseDto;
 import com.rpconsulting.app.ecommerce.services.ProductsService;
 
 import lombok.RequiredArgsConstructor;
@@ -32,7 +33,7 @@ public class ProductsController {
     }
     
     @PutMapping("/{id}")
-    @ResponseStatus(code = HttpStatus.CREATED)
+    @ResponseStatus(code = HttpStatus.OK)
     public ProductCreationResponseDto update(
     		@PathVariable("id") long id
     		, @RequestBody ProductUpdateRequestDto request) {
@@ -44,4 +45,13 @@ public class ProductsController {
     public void delete(@PathVariable("id") long id) {
         productsService.delete(id);
     }
+    
+    @PostMapping("/{id}/update-stock")
+    @ResponseStatus(code = HttpStatus.OK)
+    public StockCreationResponseDto updateStock(
+    		@PathVariable("id") long id
+    		, @RequestBody StockCreationRequestDto request) {
+        return productsService.updateStock(id, request);
+    }
+    
 }
