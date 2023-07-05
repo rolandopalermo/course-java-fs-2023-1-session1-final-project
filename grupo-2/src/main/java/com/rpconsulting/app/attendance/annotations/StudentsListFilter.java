@@ -29,7 +29,7 @@ import java.lang.annotation.Target;
                         name = "birthdateEnd",
                         dataType = "string",
                         paramType = "query"
-                ),
+                )
         }
 )
 @Target({ElementType.METHOD, ElementType.ANNOTATION_TYPE, ElementType.TYPE})

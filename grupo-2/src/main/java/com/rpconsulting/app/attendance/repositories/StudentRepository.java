@@ -20,14 +20,18 @@ public interface StudentRepository extends JpaRepository<Student, UUID> {
     @Query(
             value = "SELECT s FROM Student s " +
                     "WHERE (:name IS NULL OR LOWER(s.name) LIKE LOWER(CONCAT('%', :name, '%'))) AND " +
-                    "(:lastName IS NULL OR LOWER(s.lastName) LIKE LOWER(CONCAT('%', :lastName, '%'))) ",
+                    "(:lastName IS NULL OR LOWER(s.lastName) LIKE LOWER(CONCAT('%', :lastName, '%'))) AND " +
+                    "(s.birthdate BETWEEN  COALESCE(:birthdateStart, function('DATE', '1900-01-01') ) AND COALESCE(:birthdateEnd, function('DATE', CURRENT_TIMESTAMP)))",
             countQuery = "SELECT s FROM Student s " +
                     "WHERE (:name IS NULL OR LOWER(s.name) LIKE LOWER(CONCAT('%', :name, '%'))) AND " +
-                    "(:lastName IS NULL OR LOWER(s.lastName) LIKE LOWER(CONCAT('%', :lastName, '%'))) "
+                    "(:lastName IS NULL OR LOWER(s.lastName) LIKE LOWER(CONCAT('%', :lastName, '%'))) AND " +
+                    "(s.birthdate BETWEEN  COALESCE(:birthdateStart, function('DATE', '1900-01-01') ) AND COALESCE(:birthdateEnd, function('DATE', CURRENT_TIMESTAMP)))"
     )
     Page<Student> findAllByFilters(
             String name,
             String lastName,
+            LocalDate birthdateStart,
+            LocalDate birthdateEnd,
             Pageable pageable);
 
 }

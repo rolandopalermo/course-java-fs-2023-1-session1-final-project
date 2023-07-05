@@ -31,11 +31,11 @@ public class AttendancesServiceImpl implements AttendancesService {
     @Override
     public AttendanceCreationResponseDto create(AttendanceCreationRequestDto requestDto) {
 
-        Student student = studentRepository.findFirstByDni(requestDto.getStudent().getDni())
-                .orElseThrow(() -> new NotFoundException(MessageFormat.format("El estudiante con dni: {0} no existe", requestDto.getStudent().getDni())));
+        Student student = studentRepository.findFirstByDni(requestDto.getStudentDni())
+                .orElseThrow(() -> new NotFoundException(MessageFormat.format("El estudiante con dni: {0} no existe", requestDto.getStudentDni())));
 
-        Course course = courseRepository.findFirstByCode(requestDto.getCourse().getCode())
-                .orElseThrow(() -> new NotFoundException(MessageFormat.format("El Curso con codigo: {0} no existe", requestDto.getCourse().getCode())));
+        Course course = courseRepository.findFirstByCode(requestDto.getCourseCode())
+                .orElseThrow(() -> new NotFoundException(MessageFormat.format("El Curso con codigo: {0} no existe", requestDto.getCourseCode())));
 
         Attendance attendance = toEntity(requestDto, student, course);
 

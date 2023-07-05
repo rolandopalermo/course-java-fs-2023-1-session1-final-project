@@ -67,7 +67,6 @@ public class CoursesServiceImpl implements CoursesService {
 
     @Override
     public void deleteById(UUID uuid) {
-        findFirstById(uuid);
         courseRepository.deleteById(uuid);
     }
 

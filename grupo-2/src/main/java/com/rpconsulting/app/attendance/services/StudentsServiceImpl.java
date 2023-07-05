@@ -48,7 +48,6 @@ public class StudentsServiceImpl implements StudentsService {
 
     @Override
     public void deleteById(UUID id) {
-        findFirstById(id);
         studentRepository.deleteById(id);
     }
 
@@ -81,6 +80,8 @@ public class StudentsServiceImpl implements StudentsService {
         Page<Student> page =
                 studentRepository.findAllByFilters(filterDto.getName(),
                         filterDto.getLastName(),
+                        DateUtils.toLocalDate(filterDto.getBirthdateStart()),
+                        DateUtils.toLocalDate(filterDto.getBirthdateEnd()),
                         pageable);
         return new PageImpl<>(
                 page.stream().map(this::toDto).collect(Collectors.toList()),
