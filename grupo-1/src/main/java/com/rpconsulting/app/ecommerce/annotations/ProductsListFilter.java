@@ -16,7 +16,12 @@ import java.lang.annotation.Target;
                         paramType = "query"
                 ),
                 @ApiImplicitParam(
-                        name = "priceProduct",
+                        name = "priceMin",
+                        dataType = "bigdecimal",
+                        paramType = "query"
+                ),
+                @ApiImplicitParam(
+                        name = "priceMax",
                         dataType = "bigdecimal",
                         paramType = "query"
                 ),

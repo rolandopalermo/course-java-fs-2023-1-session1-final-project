@@ -23,16 +23,18 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             		+ "inner join categories c on p.category_id=c.id "
             		+ "inner join stocks s on s.product_id=p.id "
             		+ "where s.id=(select st.id from stocks st where st.product_id=p.id order by st.created_at desc limit 1) "
-            		+ " and (:nameProduct IS NULL OR p.name LIKE '%' || :nameProduct || '%')"
-            		+ " and (:priceProduct IS NULL OR p.price = :priceProduct)"
-            		+ " and (:nameCategory IS NULL OR c.name = :nameCategory)",
+            		+ " and (:nameProduct IS NULL OR UPPER(p.name) LIKE UPPER('%' || :nameProduct || '%'))"
+            		+ " and (:priceMin IS NULL OR p.price >= :priceMin)"
+            		+ " and (:priceMax IS NULL OR p.price <= :priceMax)"
+            		+ " and (:nameCategory IS NULL OR UPPER(c.name) LIKE UPPER('%' || :nameCategory || '%'))",
             countQuery = "select c.name category, p.id id, p.name product, p.price price, s.stock stock from products p "
             		+ "inner join categories c on p.category_id=c.id "
             		+ "inner join stocks s on s.product_id=p.id "
             		+ "where s.id=(select st.id from stocks st where st.product_id=p.id order by st.created_at desc limit 1) "
-            		+ " and (:nameProduct IS NULL OR p.name LIKE '%' || :nameProduct || '%')"
-            		+ " and (:priceProduct IS NULL OR p.price = :priceProduct)"
-            		+ " and (:nameCategory IS NULL OR c.name = :nameCategory)", nativeQuery = true)
-	Page<ProductFilterProjection> findListProduct(String nameProduct, BigDecimal priceProduct, String nameCategory, Pageable categoryName);
+            		+ " and (:nameProduct IS NULL OR UPPER(p.name) LIKE UPPER('%' || :nameProduct || '%'))"
+            		+ " and (:priceMin IS NULL OR p.price >= :priceMin)"
+            		+ " and (:priceMax IS NULL OR p.price <= :priceMax)"
+            		+ " and (:nameCategory IS NULL OR UPPER(c.name) LIKE UPPER('%' || :nameCategory || '%'))", nativeQuery = true)
+	Page<ProductFilterProjection> findListProduct(String nameProduct, BigDecimal priceMin, BigDecimal priceMax, String nameCategory, Pageable categoryName);
 	
 }

@@ -1,13 +1,17 @@
 package com.rpconsulting.app.ecommerce.services;
 
+import static java.text.MessageFormat.format;
+
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import org.aspectj.weaver.ast.Not;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.rpconsulting.app.ecommerce.dtos.ProductCreationRequestDto;
 import com.rpconsulting.app.ecommerce.dtos.ProductCreationResponseDto;
@@ -27,10 +31,6 @@ import com.rpconsulting.app.ecommerce.repositories.entities.Product;
 import com.rpconsulting.app.ecommerce.repositories.entities.Stock;
 
 import lombok.RequiredArgsConstructor;
-import static java.text.MessageFormat.format;
-
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
 
 
 @Service
@@ -42,6 +42,7 @@ public class ProductsServiceImpl implements ProductsService {
 	private final StockRepository stockRepository;
 	
 	@Override
+	@Transactional
 	public ProductCreationResponseDto create(ProductCreationRequestDto request) {
 		Optional<Product> products = productRepository.findFirstByName(request.getName());
     	if (products.isPresent()) {
@@ -53,6 +54,8 @@ public class ProductsServiceImpl implements ProductsService {
     	pro.setCategory(findFirstCategoryById(request.getCategoryId()));
     	
     	Product product = productRepository.save(pro);
+    	
+    	updateStock(product, new BigDecimal(0.0));
     	
         return toResponse(product);
 	}
@@ -105,19 +108,22 @@ public class ProductsServiceImpl implements ProductsService {
 
 	@Override
 	public StockCreationResponseDto updateStock(long id, StockCreationRequestDto request) {
-		Product pro = findFirstProductById(id);
-		Optional<Stock> s = stockRepository.findCurrentStock(id);
-		Stock sn = new Stock();
-		sn.setProduct(pro);
-		sn.setQuantity(request.getQuantity());
-		if (s.isPresent()) {
-			sn.setStock(s.get().getStock().add(request.getQuantity()));
-			//();
+		Product product = findFirstProductById(id);
+		return toRenponse(updateStock(product, request.getQuantity()));
+	}
+	
+	public Stock updateStock(Product producto, BigDecimal quantity) {
+		Optional<Stock> currentStock = stockRepository.findCurrentStock(producto.getId());
+		Stock newStock = new Stock();
+		newStock.setProduct(producto);
+		newStock.setQuantity(quantity);
+		if (currentStock.isPresent()) {
+			newStock.setStock(currentStock.get().getStock().add(quantity));
     	} else {
-    		sn.setStock(request.getQuantity());
+    		newStock.setStock(quantity);
     	}
-		sn.setCreatedAt(LocalDateTime.now());
-		return toRenponse(stockRepository.save(sn));
+		newStock.setCreatedAt(LocalDateTime.now());
+		return stockRepository.save(newStock);
 	}
 	
 	private StockCreationResponseDto toRenponse(Stock stock) {
@@ -131,7 +137,8 @@ public class ProductsServiceImpl implements ProductsService {
 	public Page<ProductSumaryDto> findAllProducts(ProductFilterDto filters, Pageable pageable) {
 		Page<ProductFilterProjection> page = productRepository.findListProduct(
 				filters.getNameProduct()
-				, filters.getPriceProduct()
+				, filters.getPriceMin()
+				, filters.getPriceMax()
 				, filters.getNameCategory(), pageable);
         return new PageImpl<>(
                 page.stream().map(this::toDto).collect(Collectors.toList()),

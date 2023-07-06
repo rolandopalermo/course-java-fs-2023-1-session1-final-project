@@ -9,6 +9,7 @@ import lombok.ToString;
 @ToString
 public class ProductFilterDto {
 	private String nameProduct;
-	private BigDecimal priceProduct;
+	private BigDecimal priceMin;
+	private BigDecimal priceMax;
 	private String nameCategory;
 }
