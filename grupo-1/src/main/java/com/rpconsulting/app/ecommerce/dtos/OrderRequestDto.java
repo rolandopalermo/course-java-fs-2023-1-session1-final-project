@@ -7,7 +7,10 @@ import java.util.List;
 
 @Data
 public class OrderRequestDto {
-    private Long customerId;
+    private String dni;
+    private String name;
+    private String email;
+    private String phone;
     private String documentType;
     private String paymentType;
     private List<ProductRequestDto> products;

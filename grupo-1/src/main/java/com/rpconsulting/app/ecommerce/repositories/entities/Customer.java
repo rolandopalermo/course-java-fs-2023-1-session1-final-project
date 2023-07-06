@@ -19,6 +19,9 @@ public class Customer {
     private String name;
 
     @Column
+    private String dni;
+
+    @Column
     private String email;
 
     @Column

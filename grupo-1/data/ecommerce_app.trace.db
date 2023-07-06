@@ -284,3 +284,6 @@ INSERT INTO CATEGORIES (id, description, name) VALUES (3, 'Descripcion 3', 'Cate
 2023-06-29 17:40:37 jdbc[14]: exception
 org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "CUSTOMER" not found; SQL statement:
 INSERT INTO CUSTOMER VALUES (1, 'diego.zavala@example.com', 'Diego Zavala', '987654310') [42102-214]
+2023-07-06 16:10:14 jdbc[14]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "[*]DESCRIBE CUSTOMERS"; expected "DELETE, DROP, DECLARE, DEALLOCATE"; SQL statement:
+DESCRIBE CUSTOMERS [42001-214]

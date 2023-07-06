@@ -2,7 +2,7 @@ package com.rpconsulting.app.ecommerce.controllers;
 
 import com.rpconsulting.app.ecommerce.dtos.OrderRequestDto;
 import com.rpconsulting.app.ecommerce.dtos.OrderResponseDto;
-import com.rpconsulting.app.ecommerce.services.DocumentDetailService;
+import com.rpconsulting.app.ecommerce.services.PaymentDocumentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(value = "api/v1.0/checkout")
 @RequiredArgsConstructor
 public class PaymentDocumentController {
-    private final DocumentDetailService documentDetailService;
+    private final PaymentDocumentService documentDetailService;
 
     @PostMapping
     public OrderResponseDto checkout(@RequestBody OrderRequestDto orderDto) {

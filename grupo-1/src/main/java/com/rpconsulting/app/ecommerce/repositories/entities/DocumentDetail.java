@@ -16,7 +16,7 @@ public class DocumentDetail {
     private Long id;
 
     @Column
-    private BigDecimal quantity;
+    private Integer quantity;
 
     @Column
     private BigDecimal price;
@@ -25,7 +25,7 @@ public class DocumentDetail {
     private String name;
 
     @ManyToOne
-    @JoinColumn(name = "order_id")
+    @JoinColumn(name = "payment_document_id")
     private PaymentDocument paymentDocument;
 
     @ManyToOne

@@ -9,7 +9,6 @@ import java.util.Optional;
 
 @Repository
 public interface CustomerRepository extends JpaRepository<Customer, Long> {
-    @Override
-    @Query(value = "SELECT * FROM customers c WHERE c.id = :id", nativeQuery = true)
-    Optional<Customer> findById(Long id);
+    @Query(value = "SELECT * FROM customers c WHERE c.dni = :dni", nativeQuery = true)
+    Optional<Customer> findByDni(String dni);
 }
