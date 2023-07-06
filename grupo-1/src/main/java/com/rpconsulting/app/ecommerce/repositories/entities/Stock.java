@@ -17,6 +17,9 @@ public class Stock {
 
     @Column
     private BigDecimal quantity;
+    
+    @Column
+    private BigDecimal stock;
 
     @Column
     private LocalDateTime createdAt;

@@ -28,6 +28,7 @@ public class DocumentDetail {
     @JoinColumn(name = "payment_document_id")
     private PaymentDocument paymentDocument;
 
+    
     @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;
