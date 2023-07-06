@@ -1,17 +1,24 @@
 package com.rpconsulting.app.ecommerce.services;
 
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.aspectj.weaver.ast.Not;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.rpconsulting.app.ecommerce.dtos.ProductCreationRequestDto;
 import com.rpconsulting.app.ecommerce.dtos.ProductCreationResponseDto;
+import com.rpconsulting.app.ecommerce.dtos.ProductFilterDto;
+import com.rpconsulting.app.ecommerce.dtos.ProductSumaryDto;
 import com.rpconsulting.app.ecommerce.dtos.ProductUpdateRequestDto;
 import com.rpconsulting.app.ecommerce.dtos.StockCreationRequestDto;
 import com.rpconsulting.app.ecommerce.dtos.StockCreationResponseDto;
 import com.rpconsulting.app.ecommerce.errors.exceptions.AlreadyExistsException;
 import com.rpconsulting.app.ecommerce.errors.exceptions.NotFoundException;
+import com.rpconsulting.app.ecommerce.projections.ProductFilterProjection;
 import com.rpconsulting.app.ecommerce.repositories.CategoryRepository;
 import com.rpconsulting.app.ecommerce.repositories.ProductRepository;
 import com.rpconsulting.app.ecommerce.repositories.StockRepository;
@@ -115,9 +122,32 @@ public class ProductsServiceImpl implements ProductsService {
 	
 	private StockCreationResponseDto toRenponse(Stock stock) {
 		StockCreationResponseDto sDto = new StockCreationResponseDto();
-		sDto.setCurrentStock(stock.getQuantity());
+		sDto.setCurrentStock(stock.getStock());
 		sDto.setProductId(stock.getProduct().getId());
 		return sDto;
 	}
+
+	@Override
+	public Page<ProductSumaryDto> findAllProducts(ProductFilterDto filters, Pageable pageable) {
+		Page<ProductFilterProjection> page = productRepository.findListProduct(
+				filters.getNameProduct()
+				, filters.getPriceProduct()
+				, filters.getNameCategory(), pageable);
+        return new PageImpl<>(
+                page.stream().map(this::toDto).collect(Collectors.toList()),
+                page.getPageable(),
+                page.getTotalElements()
+        );
+	}
+	
+	private ProductSumaryDto toDto(ProductFilterProjection projection) {
+		ProductSumaryDto dto = new ProductSumaryDto();
+		dto.setCategoryProduct(projection.getCategory());
+		dto.setIdProduct(projection.getId());
+		dto.setNameProduct(projection.getProduct());
+		dto.setPriceProduct(projection.getPrice());
+		dto.setStockProduct(projection.getStock());
+        return dto;
+    }
 
 }

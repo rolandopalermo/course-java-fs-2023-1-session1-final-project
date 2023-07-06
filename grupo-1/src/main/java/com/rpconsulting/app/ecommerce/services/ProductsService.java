@@ -2,11 +2,16 @@ package com.rpconsulting.app.ecommerce.services;
 
 import java.math.BigDecimal;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import com.rpconsulting.app.ecommerce.dtos.ProductCreationRequestDto;
 import com.rpconsulting.app.ecommerce.dtos.ProductCreationResponseDto;
 import com.rpconsulting.app.ecommerce.dtos.ProductUpdateRequestDto;
 import com.rpconsulting.app.ecommerce.dtos.StockCreationRequestDto;
 import com.rpconsulting.app.ecommerce.dtos.StockCreationResponseDto;
+import com.rpconsulting.app.ecommerce.dtos.ProductSumaryDto;
+import com.rpconsulting.app.ecommerce.dtos.ProductFilterDto;
 
 public interface ProductsService {
 	
@@ -17,5 +22,7 @@ public interface ProductsService {
 	void delete(Long id);
 
 	StockCreationResponseDto updateStock(long id, StockCreationRequestDto request);
+	
+	Page<ProductSumaryDto> findAllProducts(ProductFilterDto filters, Pageable pageable);
 
 }
