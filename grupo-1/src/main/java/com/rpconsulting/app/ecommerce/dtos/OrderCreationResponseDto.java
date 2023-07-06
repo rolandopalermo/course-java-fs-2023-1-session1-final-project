@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 @Data
-public class OrderResponseDto {
+public class OrderCreationResponseDto {
     private Long id;
     private Long customerId;
     private String customerName;
@@ -18,5 +18,4 @@ public class OrderResponseDto {
     private BigDecimal total;
     private BigDecimal taxAmount;
     private BigDecimal discount;
-    private List<ProductResponseDto> details;
 }

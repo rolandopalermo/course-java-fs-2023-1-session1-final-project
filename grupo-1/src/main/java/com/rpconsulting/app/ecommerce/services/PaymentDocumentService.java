@@ -1,10 +1,10 @@
 package com.rpconsulting.app.ecommerce.services;
 
-import com.rpconsulting.app.ecommerce.dtos.OrderRequestDto;
-import com.rpconsulting.app.ecommerce.dtos.OrderResponseDto;
+import com.rpconsulting.app.ecommerce.dtos.OrderCreationRequestDto;
+import com.rpconsulting.app.ecommerce.dtos.OrderCreationResponseDto;
 
 public interface PaymentDocumentService {
 
-    OrderResponseDto checkout(OrderRequestDto request);
+    OrderCreationResponseDto checkout(OrderCreationRequestDto request);
 }
 

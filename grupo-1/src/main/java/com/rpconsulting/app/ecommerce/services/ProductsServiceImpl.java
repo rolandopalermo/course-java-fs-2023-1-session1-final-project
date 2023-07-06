@@ -55,7 +55,7 @@ public class ProductsServiceImpl implements ProductsService {
     	
     	Product product = productRepository.save(pro);
     	
-    	updateStock(product, new BigDecimal(0.0));
+    	updateStock(product, new BigDecimal(0.0), 0);
     	
         return toResponse(product);
 	}
@@ -109,16 +109,21 @@ public class ProductsServiceImpl implements ProductsService {
 	@Override
 	public StockCreationResponseDto updateStock(long id, StockCreationRequestDto request) {
 		Product product = findFirstProductById(id);
-		return toRenponse(updateStock(product, request.getQuantity()));
+		return toRenponse(updateStock(product, request.getQuantity(), 0));
 	}
 	
-	public Stock updateStock(Product producto, BigDecimal quantity) {
+	@Override
+	public Stock updateStock(Product producto, BigDecimal quantity, int action) {
 		Optional<Stock> currentStock = stockRepository.findCurrentStock(producto.getId());
 		Stock newStock = new Stock();
 		newStock.setProduct(producto);
 		newStock.setQuantity(quantity);
 		if (currentStock.isPresent()) {
-			newStock.setStock(currentStock.get().getStock().add(quantity));
+			if (action > 0) {
+				newStock.setStock(currentStock.get().getStock().subtract(quantity));
+			} else {
+				newStock.setStock(currentStock.get().getStock().add(quantity));
+			}
     	} else {
     		newStock.setStock(quantity);
     	}

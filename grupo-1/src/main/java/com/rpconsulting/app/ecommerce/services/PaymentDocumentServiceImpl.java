@@ -1,8 +1,8 @@
 package com.rpconsulting.app.ecommerce.services;
 
-import com.rpconsulting.app.ecommerce.dtos.OrderRequestDto;
-import com.rpconsulting.app.ecommerce.dtos.OrderResponseDto;
-import com.rpconsulting.app.ecommerce.dtos.ProductRequestDto;
+import com.rpconsulting.app.ecommerce.dtos.OrderCreationRequestDto;
+import com.rpconsulting.app.ecommerce.dtos.OrderCreationResponseDto;
+import com.rpconsulting.app.ecommerce.dtos.OrderDetailRequestDto;
 import com.rpconsulting.app.ecommerce.errors.exceptions.NotFoundException;
 import com.rpconsulting.app.ecommerce.repositories.CustomerRepository;
 import com.rpconsulting.app.ecommerce.repositories.DocumentDetailRepository;
@@ -15,7 +15,6 @@ import com.rpconsulting.app.ecommerce.repositories.entities.Product;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import sun.security.x509.CertificateIssuerExtension;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -34,10 +33,11 @@ public class PaymentDocumentServiceImpl implements PaymentDocumentService {
     private final PaymentDocumentRepository paymentDocumentRepository;
     private final DocumentDetailRepository documentDetailRepository;
     private final ProductRepository productRepository;
+    private final ProductsService productsService;
 
     @Override
     @Transactional
-    public OrderResponseDto checkout(OrderRequestDto request) {
+    public OrderCreationResponseDto checkout(OrderCreationRequestDto request) {
         Optional<Customer> existingCustomer = customerRepository.findByDni(request.getDni());
         Customer customer = existingCustomer
                 .orElseGet(() -> customerRepository.save(toCustomerEntity(request)));
@@ -50,29 +50,31 @@ public class PaymentDocumentServiceImpl implements PaymentDocumentService {
                 .collect(Collectors.toList());
 
         documentDetailRepository.saveAll(details);
+        // update stock
+        details.forEach(detail -> productsService.updateStock(detail.getProduct(), BigDecimal.valueOf(detail.getQuantity()), 1));
         return toResponse(paymentDocument);
     }
 
-    private BigDecimal getTotalDiscount(OrderRequestDto request) {
+    private BigDecimal getTotalDiscount(OrderCreationRequestDto request) {
         return request.getProducts().stream()
-                .map(ProductRequestDto::getDiscount)
+                .map(OrderDetailRequestDto::getDiscount)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
-    private static BigDecimal getTaxes(OrderRequestDto request) {
+    private static BigDecimal getTaxes(OrderCreationRequestDto request) {
         return request.getProducts().stream()
-                .map(ProductRequestDto::getTaxAmount)
+                .map(OrderDetailRequestDto::getTaxAmount)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
-    private static BigDecimal getTotal(OrderRequestDto request) {
+    private static BigDecimal getTotal(OrderCreationRequestDto request) {
         return request.getProducts().stream()
                 .map(product -> product.getPrice().multiply(BigDecimal.valueOf(product.getQuantity())))
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
-    private OrderResponseDto toResponse(PaymentDocument order) {
-        OrderResponseDto response = new OrderResponseDto();
+    private OrderCreationResponseDto toResponse(PaymentDocument order) {
+        OrderCreationResponseDto response = new OrderCreationResponseDto();
         response.setId(order.getId());
         response.setCustomerId(order.getCustomer().getId());
         response.setCustomerName(order.getCustomer().getName());
@@ -87,7 +89,7 @@ public class PaymentDocumentServiceImpl implements PaymentDocumentService {
         return response;
     }
 
-    private PaymentDocument toPaymentDocumentEntity(OrderRequestDto request, Customer customer) {
+    private PaymentDocument toPaymentDocumentEntity(OrderCreationRequestDto request, Customer customer) {
         PaymentDocument paymentDocument = new PaymentDocument();
         paymentDocument.setCustomer(customer);
         paymentDocument.setDocumentType(request.getDocumentType());
@@ -100,7 +102,7 @@ public class PaymentDocumentServiceImpl implements PaymentDocumentService {
         return paymentDocument;
     }
 
-    private Customer toCustomerEntity(OrderRequestDto request) {
+    private Customer toCustomerEntity(OrderCreationRequestDto request) {
         Customer customer = new Customer();
         customer.setName(request.getName());
         customer.setEmail(request.getEmail());
@@ -110,7 +112,7 @@ public class PaymentDocumentServiceImpl implements PaymentDocumentService {
         return customer;
     }
 
-    private DocumentDetail toDocumentDetailEntity(PaymentDocument paymentDocument, ProductRequestDto detail) {
+    private DocumentDetail toDocumentDetailEntity(PaymentDocument paymentDocument, OrderDetailRequestDto detail) {
         Product product = findById(detail.getId());
         DocumentDetail documentDetail = new DocumentDetail();
         documentDetail.setName(product.getName());

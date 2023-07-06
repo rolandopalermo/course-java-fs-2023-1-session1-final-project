@@ -36,5 +36,5 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             		+ " and (:priceMax IS NULL OR p.price <= :priceMax)"
             		+ " and (:nameCategory IS NULL OR UPPER(c.name) LIKE UPPER('%' || :nameCategory || '%'))", nativeQuery = true)
 	Page<ProductFilterProjection> findListProduct(String nameProduct, BigDecimal priceMin, BigDecimal priceMax, String nameCategory, Pageable categoryName);
-	
+
 }
