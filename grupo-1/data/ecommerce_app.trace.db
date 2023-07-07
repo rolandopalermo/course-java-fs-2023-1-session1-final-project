@@ -1,31 +1,15 @@
-2023-06-24 21:15:01 jdbc[14]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SELECT * FROM CATEGORIES CATEGORIES [*]PRODUCTS PRODUCTS"; SQL statement:
-SELECT * FROM CATEGORIES CATEGORIES PRODUCTS PRODUCTS [42000-214]
-2023-06-29 17:05:22 jdbc[14]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SELECT * FROM CATEGORIES[*]:"; SQL statement:
-SELECT * FROM CATEGORIES: [42000-214]
-2023-06-29 17:06:03 jdbc[14]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Column "Descripcion 1" not found; SQL statement:
-INSERT INTO CATEGORIES (description, name) VALUES ("Descripcion 1", "Categoria 1") [42122-214]
-	at org.h2.message.DbException.getJdbcSQLException(DbException.java:502)
-	at org.h2.message.DbException.getJdbcSQLException(DbException.java:477)
+2023-07-06 23:49:36 jdbc[115]: null
+org.h2.message.DbException: La conexión no fue cerrada por la aplicación y esta siendo limpiada (garbage collected)
+The connection was not closed by the application and is garbage collected [90018-214]
 	at org.h2.message.DbException.get(DbException.java:223)
 	at org.h2.message.DbException.get(DbException.java:199)
-	at org.h2.expression.ExpressionColumn.getColumnException(ExpressionColumn.java:244)
-	at org.h2.expression.ExpressionColumn.optimizeOther(ExpressionColumn.java:226)
-	at org.h2.expression.ExpressionColumn.optimize(ExpressionColumn.java:213)
-	at org.h2.command.dml.Insert.doPrepare(Insert.java:300)
-	at org.h2.command.dml.DataChangeStatement.prepare(DataChangeStatement.java:37)
-	at org.h2.command.Parser.prepareCommand(Parser.java:575)
-	at org.h2.engine.SessionLocal.prepareLocal(SessionLocal.java:631)
-	at org.h2.engine.SessionLocal.prepareCommand(SessionLocal.java:554)
-	at org.h2.jdbc.JdbcConnection.prepareCommand(JdbcConnection.java:1116)
-	at org.h2.jdbc.JdbcStatement.executeInternal(JdbcStatement.java:237)
-	at org.h2.jdbc.JdbcStatement.execute(JdbcStatement.java:223)
-	at org.h2.server.web.WebApp.getResult(WebApp.java:1339)
-	at org.h2.server.web.WebApp.query(WebApp.java:1137)
-	at org.h2.server.web.WebApp.query(WebApp.java:1113)
-	at org.h2.server.web.WebApp.process(WebApp.java:244)
+	at org.h2.message.DbException.get(DbException.java:188)
+	at org.h2.jdbc.JdbcConnection.closeOld(JdbcConnection.java:190)
+	at org.h2.jdbc.JdbcConnection.<init>(JdbcConnection.java:132)
+	at org.h2.util.JdbcUtils.getConnection(JdbcUtils.java:288)
+	at org.h2.server.web.WebServer.getConnection(WebServer.java:808)
+	at org.h2.server.web.WebApp.login(WebApp.java:1033)
+	at org.h2.server.web.WebApp.process(WebApp.java:226)
 	at org.h2.server.web.WebApp.processRequest(WebApp.java:176)
 	at org.h2.server.web.WebServlet.doGet(WebServlet.java:129)
 	at org.h2.server.web.WebServlet.doPost(WebServlet.java:166)
@@ -64,37 +48,23 @@ INSERT INTO CATEGORIES (description, name) VALUES ("Descripcion 1", "Categoria 1
 	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
 	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
 	at java.lang.Thread.run(Thread.java:748)
-2023-06-29 17:06:31 jdbc[14]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "INSERT INTO CATEGORIES (description, name) [*]VALUE (""Descripcion 1"", ""Categoria 1"")"; expected "OVERRIDING USER VALUE, OVERRIDING SYSTEM VALUE, DIRECT, SORTED, DEFAULT VALUES, VALUES, SET, WITH, (, SELECT, TABLE, VALUES"; SQL statement:
-INSERT INTO CATEGORIES (description, name) VALUE ("Descripcion 1", "Categoria 1") [42001-214]
-2023-06-29 17:06:34 jdbc[14]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "INSERT INTO CATEGORIES (description, name) [*]VALUE (""Descripcion 1"", ""Categoria 1"")"; expected "OVERRIDING USER VALUE, OVERRIDING SYSTEM VALUE, DIRECT, SORTED, DEFAULT VALUES, VALUES, SET, WITH, (, SELECT, TABLE, VALUES"; SQL statement:
-INSERT INTO CATEGORIES (description, name) VALUE ("Descripcion 1", "Categoria 1") [42001-214]
-2023-06-29 17:06:36 jdbc[14]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "INSERT INTO CATEGORIES (description, name) [*]VALUE (""Descripcion 1"", ""Categoria 1"")"; expected "OVERRIDING USER VALUE, OVERRIDING SYSTEM VALUE, DIRECT, SORTED, DEFAULT VALUES, VALUES, SET, WITH, (, SELECT, TABLE, VALUES"; SQL statement:
-INSERT INTO CATEGORIES (description, name) VALUE ("Descripcion 1", "Categoria 1") [42001-214]
-2023-06-29 17:06:43 jdbc[14]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Column "Descripcion 1" not found; SQL statement:
-INSERT INTO CATEGORIES (description, name) VALUEs ("Descripcion 1", "Categoria 1") [42122-214]
-	at org.h2.message.DbException.getJdbcSQLException(DbException.java:502)
+Caused by: org.h2.jdbc.JdbcSQLNonTransientConnectionException: La conexión no fue cerrada por la aplicación y esta siendo limpiada (garbage collected)
+The connection was not closed by the application and is garbage collected [90018-214]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:678)
 	at org.h2.message.DbException.getJdbcSQLException(DbException.java:477)
+	... 47 more
+2023-07-06 23:49:36 jdbc[115]: null
+org.h2.message.DbException: La conexión no fue cerrada por la aplicación y esta siendo limpiada (garbage collected)
+The connection was not closed by the application and is garbage collected [90018-214]
 	at org.h2.message.DbException.get(DbException.java:223)
 	at org.h2.message.DbException.get(DbException.java:199)
-	at org.h2.expression.ExpressionColumn.getColumnException(ExpressionColumn.java:244)
-	at org.h2.expression.ExpressionColumn.optimizeOther(ExpressionColumn.java:226)
-	at org.h2.expression.ExpressionColumn.optimize(ExpressionColumn.java:213)
-	at org.h2.command.dml.Insert.doPrepare(Insert.java:300)
-	at org.h2.command.dml.DataChangeStatement.prepare(DataChangeStatement.java:37)
-	at org.h2.command.Parser.prepareCommand(Parser.java:575)
-	at org.h2.engine.SessionLocal.prepareLocal(SessionLocal.java:631)
-	at org.h2.engine.SessionLocal.prepareCommand(SessionLocal.java:554)
-	at org.h2.jdbc.JdbcConnection.prepareCommand(JdbcConnection.java:1116)
-	at org.h2.jdbc.JdbcStatement.executeInternal(JdbcStatement.java:237)
-	at org.h2.jdbc.JdbcStatement.execute(JdbcStatement.java:223)
-	at org.h2.server.web.WebApp.getResult(WebApp.java:1339)
-	at org.h2.server.web.WebApp.query(WebApp.java:1137)
-	at org.h2.server.web.WebApp.query(WebApp.java:1113)
-	at org.h2.server.web.WebApp.process(WebApp.java:244)
+	at org.h2.message.DbException.get(DbException.java:188)
+	at org.h2.jdbc.JdbcConnection.closeOld(JdbcConnection.java:190)
+	at org.h2.jdbc.JdbcConnection.<init>(JdbcConnection.java:132)
+	at org.h2.util.JdbcUtils.getConnection(JdbcUtils.java:288)
+	at org.h2.server.web.WebServer.getConnection(WebServer.java:808)
+	at org.h2.server.web.WebApp.login(WebApp.java:1033)
+	at org.h2.server.web.WebApp.process(WebApp.java:226)
 	at org.h2.server.web.WebApp.processRequest(WebApp.java:176)
 	at org.h2.server.web.WebServlet.doGet(WebServlet.java:129)
 	at org.h2.server.web.WebServlet.doPost(WebServlet.java:166)
@@ -133,157 +103,21 @@ INSERT INTO CATEGORIES (description, name) VALUEs ("Descripcion 1", "Categoria 1
 	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
 	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
 	at java.lang.Thread.run(Thread.java:748)
-2023-06-29 17:07:10 jdbc[14]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Column "Descripcion 1" not found; SQL statement:
-INSERT INTO CATEGORIES(description, name) VALUEs ("Descripcion 1", "Categoria 1") [42122-214]
-	at org.h2.message.DbException.getJdbcSQLException(DbException.java:502)
+Caused by: org.h2.jdbc.JdbcSQLNonTransientConnectionException: La conexión no fue cerrada por la aplicación y esta siendo limpiada (garbage collected)
+The connection was not closed by the application and is garbage collected [90018-214]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:678)
 	at org.h2.message.DbException.getJdbcSQLException(DbException.java:477)
-	at org.h2.message.DbException.get(DbException.java:223)
-	at org.h2.message.DbException.get(DbException.java:199)
-	at org.h2.expression.ExpressionColumn.getColumnException(ExpressionColumn.java:244)
-	at org.h2.expression.ExpressionColumn.optimizeOther(ExpressionColumn.java:226)
-	at org.h2.expression.ExpressionColumn.optimize(ExpressionColumn.java:213)
-	at org.h2.command.dml.Insert.doPrepare(Insert.java:300)
-	at org.h2.command.dml.DataChangeStatement.prepare(DataChangeStatement.java:37)
-	at org.h2.command.Parser.prepareCommand(Parser.java:575)
-	at org.h2.engine.SessionLocal.prepareLocal(SessionLocal.java:631)
-	at org.h2.engine.SessionLocal.prepareCommand(SessionLocal.java:554)
-	at org.h2.jdbc.JdbcConnection.prepareCommand(JdbcConnection.java:1116)
-	at org.h2.jdbc.JdbcStatement.executeInternal(JdbcStatement.java:237)
-	at org.h2.jdbc.JdbcStatement.execute(JdbcStatement.java:223)
-	at org.h2.server.web.WebApp.getResult(WebApp.java:1339)
-	at org.h2.server.web.WebApp.query(WebApp.java:1137)
-	at org.h2.server.web.WebApp.query(WebApp.java:1113)
-	at org.h2.server.web.WebApp.process(WebApp.java:244)
-	at org.h2.server.web.WebApp.processRequest(WebApp.java:176)
-	at org.h2.server.web.WebServlet.doGet(WebServlet.java:129)
-	at org.h2.server.web.WebServlet.doPost(WebServlet.java:166)
-	at javax.servlet.http.HttpServlet.service(HttpServlet.java:555)
-	at javax.servlet.http.HttpServlet.service(HttpServlet.java:623)
-	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:209)
-	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:153)
-	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51)
-	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:178)
-	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:153)
-	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
-	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117)
-	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:178)
-	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:153)
-	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
-	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117)
-	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:178)
-	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:153)
-	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
-	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117)
-	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:178)
-	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:153)
-	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167)
-	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90)
-	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:481)
-	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:130)
-	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93)
-	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
-	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:343)
-	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:390)
-	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
-	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:926)
-	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1791)
-	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
-	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191)
-	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
-	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
-	at java.lang.Thread.run(Thread.java:748)
-2023-06-29 17:07:47 jdbc[14]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Column "Descripcion 1" not found; SQL statement:
-INSERT INTO CATEGORIES (description, name) VALUES ("Descripcion 1", "Categoria 1") [42122-214]
-	at org.h2.message.DbException.getJdbcSQLException(DbException.java:502)
-	at org.h2.message.DbException.getJdbcSQLException(DbException.java:477)
-	at org.h2.message.DbException.get(DbException.java:223)
-	at org.h2.message.DbException.get(DbException.java:199)
-	at org.h2.expression.ExpressionColumn.getColumnException(ExpressionColumn.java:244)
-	at org.h2.expression.ExpressionColumn.optimizeOther(ExpressionColumn.java:226)
-	at org.h2.expression.ExpressionColumn.optimize(ExpressionColumn.java:213)
-	at org.h2.command.dml.Insert.doPrepare(Insert.java:300)
-	at org.h2.command.dml.DataChangeStatement.prepare(DataChangeStatement.java:37)
-	at org.h2.command.Parser.prepareCommand(Parser.java:575)
-	at org.h2.engine.SessionLocal.prepareLocal(SessionLocal.java:631)
-	at org.h2.engine.SessionLocal.prepareCommand(SessionLocal.java:554)
-	at org.h2.jdbc.JdbcConnection.prepareCommand(JdbcConnection.java:1116)
-	at org.h2.jdbc.JdbcStatement.executeInternal(JdbcStatement.java:237)
-	at org.h2.jdbc.JdbcStatement.execute(JdbcStatement.java:223)
-	at org.h2.server.web.WebApp.getResult(WebApp.java:1339)
-	at org.h2.server.web.WebApp.query(WebApp.java:1137)
-	at org.h2.server.web.WebApp.query(WebApp.java:1113)
-	at org.h2.server.web.WebApp.process(WebApp.java:244)
-	at org.h2.server.web.WebApp.processRequest(WebApp.java:176)
-	at org.h2.server.web.WebServlet.doGet(WebServlet.java:129)
-	at org.h2.server.web.WebServlet.doPost(WebServlet.java:166)
-	at javax.servlet.http.HttpServlet.service(HttpServlet.java:555)
-	at javax.servlet.http.HttpServlet.service(HttpServlet.java:623)
-	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:209)
-	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:153)
-	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51)
-	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:178)
-	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:153)
-	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
-	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117)
-	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:178)
-	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:153)
-	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
-	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117)
-	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:178)
-	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:153)
-	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
-	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117)
-	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:178)
-	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:153)
-	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167)
-	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90)
-	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:481)
-	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:130)
-	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93)
-	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
-	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:343)
-	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:390)
-	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
-	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:926)
-	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1791)
-	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
-	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191)
-	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
-	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
-	at java.lang.Thread.run(Thread.java:748)
-2023-06-29 17:09:35 jdbc[14]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SELECT * FROM CATEGORIES \000d\000a\000d\000a\000d\000aINSERT [*]INTO CATEGORIES (id, description, name) VALUES (3, 'Descripcion 3', 'Categoria 3')"; SQL statement:
+	... 47 more
+2023-07-06 23:49:54 jdbc[115]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Error de Sintaxis en sentencia SQL "SELECT * FROM CATEGORIES \000d\000a[*]SELECT * FROM PRODUCTS"
+Syntax error in SQL statement "SELECT * FROM CATEGORIES \000d\000a[*]SELECT * FROM PRODUCTS"; SQL statement:
 SELECT * FROM CATEGORIES 
-
-
-INSERT INTO CATEGORIES (id, description, name) VALUES (3, 'Descripcion 3', 'Categoria 3') [42000-214]
-2023-06-29 17:09:39 jdbc[14]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SELECT * FROM CATEGORIES \000d\000a\000d\000a\000d\000aINSERT [*]INTO CATEGORIES (id, description, name) VALUES (3, 'Descripcion 3', 'Categoria 3')"; SQL statement:
-SELECT * FROM CATEGORIES 
-
-
-INSERT INTO CATEGORIES (id, description, name) VALUES (3, 'Descripcion 3', 'Categoria 3') [42000-214]
-2023-06-29 17:09:41 jdbc[14]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SELECT * FROM CATEGORIES \000d\000a\000d\000a\000d\000aINSERT [*]INTO CATEGORIES (id, description, name) VALUES (3, 'Descripcion 3', 'Categoria 3')"; SQL statement:
-SELECT * FROM CATEGORIES 
-
-
-INSERT INTO CATEGORIES (id, description, name) VALUES (3, 'Descripcion 3', 'Categoria 3') [42000-214]
-2023-06-29 17:09:49 jdbc[14]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SELECT * FROM CATEGORIES \000d\000a\000d\000a\000d\000aINSERT [*]INTO CATEGORIES (id, description, name) VALUES (3, 'Descripcion 3', 'Categoria 3')"; SQL statement:
-SELECT * FROM CATEGORIES 
-
-
-INSERT INTO CATEGORIES (id, description, name) VALUES (3, 'Descripcion 3', 'Categoria 3') [42000-214]
-2023-06-29 17:10:21 jdbc[14]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "[*]SELEC\000d\000aINSERT INTO CATEGORIES (id, description, name) VALUES (3, 'Descripcion 3', 'Categoria 3')"; expected "SAVEPOINT, SCRIPT, SHUTDOWN, SHOW"; SQL statement:
-SELEC
-INSERT INTO CATEGORIES (id, description, name) VALUES (3, 'Descripcion 3', 'Categoria 3') [42001-214]
-2023-06-29 17:40:37 jdbc[14]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "CUSTOMER" not found; SQL statement:
-INSERT INTO CUSTOMER VALUES (1, 'diego.zavala@example.com', 'Diego Zavala', '987654310') [42102-214]
-2023-07-06 16:10:14 jdbc[14]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "[*]DESCRIBE CUSTOMERS"; expected "DELETE, DROP, DECLARE, DEALLOCATE"; SQL statement:
-DESCRIBE CUSTOMERS [42001-214]
+SELECT * FROM PRODUCTS [42000-214]
+2023-07-06 23:56:04 jdbc[115]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Error de Sintaxis en sentencia SQL "[*]selet *from STOCKS"; se esperaba "SAVEPOINT, SCRIPT, SHUTDOWN, SHOW"
+Syntax error in SQL statement "[*]selet *from STOCKS"; expected "SAVEPOINT, SCRIPT, SHUTDOWN, SHOW"; SQL statement:
+selet *from STOCKS [42001-214]
+2023-07-06 23:56:11 jdbc[115]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Error de Sintaxis en sentencia SQL "[*]selet *from STOCKS"; se esperaba "SAVEPOINT, SCRIPT, SHUTDOWN, SHOW"
+Syntax error in SQL statement "[*]selet *from STOCKS"; expected "SAVEPOINT, SCRIPT, SHUTDOWN, SHOW"; SQL statement:
+selet *from STOCKS [42001-214]
