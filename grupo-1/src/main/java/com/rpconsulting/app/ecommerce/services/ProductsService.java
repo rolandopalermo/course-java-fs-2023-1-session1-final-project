@@ -22,11 +22,9 @@ public interface ProductsService {
 	ProductCreationResponseDto update(long id, ProductUpdateRequestDto request);
 	
 	void delete(Long id);
-
-	StockCreationResponseDto updateStock(long id, StockCreationRequestDto request);
-
-	Stock updateStock(Product producto, BigDecimal quantity, int action);
 	
 	Page<ProductSumaryDto> findAllProducts(ProductFilterDto filters, Pageable pageable);
+	
+	StockCreationResponseDto updateStock(long id, StockCreationRequestDto request);
 
 }

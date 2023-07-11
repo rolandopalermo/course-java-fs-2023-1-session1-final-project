@@ -33,7 +33,7 @@ public class PaymentDocumentServiceImpl implements PaymentDocumentService {
     private final PaymentDocumentRepository paymentDocumentRepository;
     private final DocumentDetailRepository documentDetailRepository;
     private final ProductRepository productRepository;
-    private final ProductsService productsService;
+    private final StockService stockService;
 
     @Override
     @Transactional
@@ -51,7 +51,7 @@ public class PaymentDocumentServiceImpl implements PaymentDocumentService {
 
         documentDetailRepository.saveAll(details);
         // update stock
-        details.forEach(detail -> productsService.updateStock(detail.getProduct(), BigDecimal.valueOf(detail.getQuantity()), 1));
+        details.forEach(detail -> stockService.updateStock(detail.getProduct(), BigDecimal.valueOf(detail.getQuantity()*-1.0)));
         return toResponse(paymentDocument);
     }
 

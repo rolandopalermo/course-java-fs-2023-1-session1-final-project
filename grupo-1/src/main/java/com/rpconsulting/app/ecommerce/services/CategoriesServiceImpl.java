@@ -1,5 +1,6 @@
 package com.rpconsulting.app.ecommerce.services;
 
+import static java.text.MessageFormat.format;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
@@ -24,8 +25,7 @@ public class CategoriesServiceImpl implements CategoriesService {
 		Optional<Category> categories = categoryRepository.findFirstByName(request.getName());
     	
     	if (categories.isPresent()) {
-    		throw new AlreadyExistsException("La categoria: " + request.getName() 
-    		+ ", ya existe.");
+    		throw new AlreadyExistsException(format("La categoria: {0}, ya existe.",request.getName()));
     	}
     	
     	Category category = categoryRepository.save(toEntity(request));
@@ -41,8 +41,7 @@ public class CategoriesServiceImpl implements CategoriesService {
 			categories.get().setDescription(request.getDescription());
 			return toResponse(categoryRepository.save(categories.get()));
 		} else {
-			throw new NotFoundException("La categoria ingresada: " + request.getName() 
-    		+ " no existe.");
+			throw new NotFoundException(format("La categoria ingresada: {0} no existe.", request.getName()));
 		}
 	}
 

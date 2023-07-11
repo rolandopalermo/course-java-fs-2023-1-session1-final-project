@@ -1,4 +1,4 @@
-package com.rpconsulting.app.ecommerce.controllers;
+package com.rpconsulting.app.ecommerce.controllers.v1;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;

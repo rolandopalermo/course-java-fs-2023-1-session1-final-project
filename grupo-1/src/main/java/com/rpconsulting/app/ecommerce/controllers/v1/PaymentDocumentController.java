@@ -1,4 +1,4 @@
-package com.rpconsulting.app.ecommerce.controllers;
+package com.rpconsulting.app.ecommerce.controllers.v1;
 
 import com.rpconsulting.app.ecommerce.dtos.OrderCreationRequestDto;
 import com.rpconsulting.app.ecommerce.dtos.OrderCreationResponseDto;

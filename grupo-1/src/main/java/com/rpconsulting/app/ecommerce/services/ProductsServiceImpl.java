@@ -3,7 +3,6 @@ package com.rpconsulting.app.ecommerce.services;
 import static java.text.MessageFormat.format;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -25,7 +24,6 @@ import com.rpconsulting.app.ecommerce.errors.exceptions.NotFoundException;
 import com.rpconsulting.app.ecommerce.projections.ProductFilterProjection;
 import com.rpconsulting.app.ecommerce.repositories.CategoryRepository;
 import com.rpconsulting.app.ecommerce.repositories.ProductRepository;
-import com.rpconsulting.app.ecommerce.repositories.StockRepository;
 import com.rpconsulting.app.ecommerce.repositories.entities.Category;
 import com.rpconsulting.app.ecommerce.repositories.entities.Product;
 import com.rpconsulting.app.ecommerce.repositories.entities.Stock;
@@ -39,15 +37,14 @@ public class ProductsServiceImpl implements ProductsService {
 
 	private final ProductRepository productRepository;
 	private final CategoryRepository categoryRepository;
-	private final StockRepository stockRepository;
+	private final StockService stockService;
 	
 	@Override
 	@Transactional
 	public ProductCreationResponseDto create(ProductCreationRequestDto request) {
 		Optional<Product> products = productRepository.findFirstByName(request.getName());
     	if (products.isPresent()) {
-    		throw new AlreadyExistsException("La producto ingresado : " + request.getName() 
-    		+ ", ya existe.");
+    		throw new AlreadyExistsException(format("La producto ingresado : {0}, ya existe.", request.getName()));
     	}
     	
     	Product pro = toEntity(request);
@@ -55,7 +52,7 @@ public class ProductsServiceImpl implements ProductsService {
     	
     	Product product = productRepository.save(pro);
     	
-    	updateStock(product, new BigDecimal(0.0), 0);
+    	stockService.updateStock(product, new BigDecimal(0.0));
     	
         return toResponse(product);
 	}
@@ -109,25 +106,7 @@ public class ProductsServiceImpl implements ProductsService {
 	@Override
 	public StockCreationResponseDto updateStock(long id, StockCreationRequestDto request) {
 		Product product = findFirstProductById(id);
-		return toRenponse(updateStock(product, request.getQuantity(), 0));
-	}
-	
-	@Override
-	public Stock updateStock(Product producto, BigDecimal quantity, int action) {
-		Optional<Stock> currentStock = stockRepository.findCurrentStock(producto.getId());
-		Stock newStock = new Stock();
-		newStock.setProduct(producto);
-		if (currentStock.isPresent()) {
-			if (action > 0) {
-				newStock.setStock(currentStock.get().getStock().subtract(quantity));
-				newStock.setQuantity(BigDecimal.valueOf(-1).multiply(quantity));
-			} else {
-				newStock.setStock(currentStock.get().getStock().add(quantity));
-				newStock.setQuantity(quantity);
-			}
-    	}
-		newStock.setCreatedAt(LocalDateTime.now());
-		return stockRepository.save(newStock);
+		return toRenponse(stockService.updateStock(product, request.getQuantity()));
 	}
 	
 	private StockCreationResponseDto toRenponse(Stock stock) {

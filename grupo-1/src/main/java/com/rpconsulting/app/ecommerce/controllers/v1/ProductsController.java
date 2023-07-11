@@ -1,4 +1,4 @@
-package com.rpconsulting.app.ecommerce.controllers;
+package com.rpconsulting.app.ecommerce.controllers.v1;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -54,7 +54,7 @@ public class ProductsController {
         productsService.delete(id);
     }
     
-    @PostMapping("/{id}/update-stock")
+    @PutMapping("/{id}/update-stock")
     @ResponseStatus(code = HttpStatus.OK)
     public StockCreationResponseDto updateStock(
     		@PathVariable("id") long id
