@@ -117,15 +117,14 @@ public class ProductsServiceImpl implements ProductsService {
 		Optional<Stock> currentStock = stockRepository.findCurrentStock(producto.getId());
 		Stock newStock = new Stock();
 		newStock.setProduct(producto);
-		newStock.setQuantity(quantity);
 		if (currentStock.isPresent()) {
 			if (action > 0) {
 				newStock.setStock(currentStock.get().getStock().subtract(quantity));
+				newStock.setQuantity(BigDecimal.valueOf(-1).multiply(quantity));
 			} else {
 				newStock.setStock(currentStock.get().getStock().add(quantity));
+				newStock.setQuantity(quantity);
 			}
-    	} else {
-    		newStock.setStock(quantity);
     	}
 		newStock.setCreatedAt(LocalDateTime.now());
 		return stockRepository.save(newStock);
