@@ -2,6 +2,7 @@ package com.rpconsulting.app.attendance.services;
 
 import com.rpconsulting.app.attendance.dtos.courses.CourseCreationRequestDto;
 import com.rpconsulting.app.attendance.dtos.courses.CourseCreationResponseDto;
+import com.rpconsulting.app.attendance.dtos.courses.CourseListFilterDto;
 import com.rpconsulting.app.attendance.errors.exceptions.AlreadyExistsException;
 import com.rpconsulting.app.attendance.errors.exceptions.NotFoundException;
 import com.rpconsulting.app.attendance.repositories.CourseRepository;
@@ -84,6 +85,16 @@ public class CoursesServiceImpl implements CoursesService {
         return new PageImpl<>(
                 page.stream().map(this::toDto)
                         .collect(Collectors.toList()),
+                page.getPageable(),
+                page.getTotalElements()
+        );
+    }
+
+    @Override
+    public Page<CourseCreationResponseDto> findAllByFilters(CourseListFilterDto filterDto, Pageable pageable) {
+        Page<Course> page = courseRepository.findAllByFilters(filterDto.getName(), filterDto.getCode(), pageable);
+        return new PageImpl<>(
+                page.stream().map(this::toDto).collect(Collectors.toList()),
                 page.getPageable(),
                 page.getTotalElements()
         );

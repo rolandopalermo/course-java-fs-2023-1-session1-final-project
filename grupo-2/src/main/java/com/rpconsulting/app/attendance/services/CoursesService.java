@@ -2,6 +2,7 @@ package com.rpconsulting.app.attendance.services;
 
 import com.rpconsulting.app.attendance.dtos.courses.CourseCreationRequestDto;
 import com.rpconsulting.app.attendance.dtos.courses.CourseCreationResponseDto;
+import com.rpconsulting.app.attendance.dtos.courses.CourseListFilterDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -18,4 +19,6 @@ public interface CoursesService {
     CourseCreationResponseDto update(UUID uuid, CourseCreationRequestDto request);
 
     Page<CourseCreationResponseDto> findAll(Pageable pageable);
+
+    Page<CourseCreationResponseDto> findAllByFilters(CourseListFilterDto filterDto, Pageable pageable);
 }
